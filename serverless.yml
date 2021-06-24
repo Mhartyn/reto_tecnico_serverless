@@ -15,6 +15,8 @@ disabledDeprecations:
   - DEP_CODE_1
   - "*"
 
+configValidationMode: off
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -32,7 +34,6 @@ provider:
       Resource: "arn:aws:dynamodb:us-east-2:*:*"
 
 functions:
-  
   startWardsPersons:
     handler: handlers/handlerStartwards.getPeoples
     memorySize: 128
@@ -59,7 +60,7 @@ functions:
     handler: handlers/handlerUsers.getUsers
     memorySize: 128
     timeout: 12
-    description: Mostrar  usuarios de dynamodb. 
+    description: Mostrar  usuarios de dynamodb.
     events:
       - http:
           path: /endpoint/v1/users
