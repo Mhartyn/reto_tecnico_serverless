@@ -1,0 +1,78 @@
+service: my-app
+
+frameworkVersion: "2"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+disabledDeprecations:
+  - DEP_CODE_1
+  - "*"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-2
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:us-east-2:*:*"
+
+functions:
+  
+  startWardsPersons:
+    handler: handlers/handlerStartwards.getPeoples
+    memorySize: 128
+    timeout: 12
+    description: Obtener Informacion de los peoples de la Api de StartWards
+    events:
+      - http:
+          path: /endpoint/v1/startwards/people/
+          method: get
+          cors: true
+
+  startWardsPerson:
+    handler: handlers/handlerStartwards.getPeople
+    memorySize: 128
+    timeout: 12
+    description: Obtener Informacion de una people de la Api de StartWards
+    events:
+      - http:
+          path: /endpoint/v1/startwards/people/{people_id}
+          method: get
+          cors: true
+
+  getUsers:
+    handler: handlers/handlerUsers.getUsers
+    memorySize: 128
+    timeout: 12
+    description: Mostrar  usuarios de dynamodb. 
+    events:
+      - http:
+          path: /endpoint/v1/users
+          method: get
+          cors: true
+
+  registerUser:
+    handler: handlers/handlerUsers.registerUser
+    memorySize: 128
+    timeout: 12
+    description: Registrar Usuario en base datos DynamoDb
+    events:
+      - http:
+          path: /endpoint/v1/users
+          method: post
+          cors: true
